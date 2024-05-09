@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{%  block body_field %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Post content-->
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h3 class="fw-bolder mb-1">{{article.title}}</h3>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{article.created_date}} tarihinde, {{article.author.username}} tarafından yayınlandı.</div>
+            </header>
+            <!-- Preview image figure-->
+            {% if article.article_image %}
+                <img class="img-fluid rounded" src="{{article.article_image.urls}}" alt="">
+            {% endif %}
+            <!-- Post content-->
+            <section class="mb-5">
+                <p class="fs-5 mb-4">{{article.content|safe}}</p>
+            </section>
+        </article>
+
+        <hr>
+        <h4>Yorumlar</h4>
+        {% if comments %}
+            {% for comment in comments %}
+                <!-- Single comment-->
+                <section class="mb-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">{{comment.comment_author}}</div>
+                                    {{comment.comment_date}}
+                                    <br>
+                                    {{comment.comment_content}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            {% endfor %}
+            
+        {% else %}
+            <div class="alert alert-danger">Herhangi bir yorum yok!</div>
+        {% endif %}
+        
+        <!-- Comments section-->
+        <section class="mb-5">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <form method="post" action="{% url 'article:comment' article.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                        <input name="comment_author" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="İsim yazın.">
+                        </div>
+                        <!--Textarea veya inputa name vermemiz gerekiyor. Çünkü daha sonra bu name'e göre bilgileri alacağız.-->
+                        <div class="form-group">
+                        <textarea name="comment_content" class="form-control" rows="3" placeholder="Bir yorum ekle."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-outline-info">Yorum Ekle</button> 
+                    </form>
+                </div>
+            </div>
+        </section>
+         
+            
+
+    </div>
+</div>
+
+
+
+{% endblock %}
