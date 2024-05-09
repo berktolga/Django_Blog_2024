@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{%  block body_field %}
+{% load crispy_forms_tags %}
+
+
+<div class="row"> <!-- Bootstrap Grid kullanarak sayfayı ortalıyoruz. -->
+    <div class="col-md-6 offset-md-3">
+        
+        <h3>Giriş Yap</h3>
+        <hr>
+
+        <form method="post">
+            {% csrf_token %}
+            {{form|crispy}} <!-- Forms.py'deki formumuzu burada gösteriyoruz. Ancak as_p kullanımı bizim tasarımsal kısmımızı devre dışı bırakıyor. Bu nedenle Django Crispy Form isimli bir 3.parti uygulama kullanmalıyız.-->
+            <br>
+            <button type="submit" class="btn btn-danger">Giriş Yap</button>
+        </form>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+

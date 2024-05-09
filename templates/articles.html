@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{%  block body_field %}
+    <h3>Makaleler</h3>
+    <hr>
+
+    <div class="input-group mb-3"> 
+        <form>
+            {% csrf_token %}
+            <input type="text" name="keyword" class="form-control" placeholder="Başlıkta Ara">
+            <button class="btn btn-danger" type="submit">Ara</button>
+        </form>
+    </div>
+
+    {% if articles %}
+        {% for article in articles %}
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h3 class="fw-bolder mb-1">{{article.title}}</h3>
+                        <!-- Post meta content-->
+                        <div class="text-muted fst-italic mb-2">{{article.created_date}} tarihinde, {{article.author.username}} tarafından yayınlandı.</div>
+                        
+                    </header>
+                    <!-- Preview image figure-->
+                    {% if article.article_image %}
+                        <figure class="mb-4"><img class="img-fluid rounded" src="{{article.article_image.urls}}" alt="..." /></figure>
+                    {% endif %}
+                    
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <p class="fs-5 mb-4">{{article.content|safe|truncatewords:10}}</p>
+                    </section>
+                    <a style="float:right;" href="{% url 'article:detail' article.id %}" class="btn btn-danger">Devamını Oku.</a>
+                </article>
+            
+            </div>
+        
+        </div>
+        
+            
+        {% endfor %}
+    {% else %}
+        <div class ="alert alert-danger">Makale Bulunamadı.</div>
+        
+    {% endif %}
+
+
+{% endblock %}
